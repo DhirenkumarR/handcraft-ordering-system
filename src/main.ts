@@ -18,10 +18,10 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
 
   const config = new DocumentBuilder()
-  .setTitle('My API')
+  .setTitle('Handcraft Ordering System')
   .setDescription('API Documentation')
   .setVersion('1.0')
-  .addBearerAuth() // Enable JWT Authentication
+  .addBearerAuth() 
   .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -29,7 +29,6 @@ async function bootstrap() {
   
   await app.listen(process.env.PORT ?? 3000, () => {
     console.log('server running on port',process.env.PORT ?? 3000);
-    
   });
 }
 bootstrap();
