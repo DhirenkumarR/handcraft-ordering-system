@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { SignUpDTO } from './users.dto';
+import { LoginDTO, SignUpDTO } from './users.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
@@ -16,11 +16,9 @@ export class UsersController {
   }
 
   @Post('login')
-  @HttpCode(200)
   async login(
-    @Body('email') email: string,
-    @Body('password') password: string,
+    @Body() body : LoginDTO,
   ) {
-    return this.usersService.login(email, password);
+    return this.usersService.login(body);
   }
 }
