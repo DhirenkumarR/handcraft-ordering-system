@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Product } from './product.schema';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Order extends Document {
   @Prop({ required: true })
   customerName: string;

@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
+import { SignUpDTO } from './users.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,17 +13,21 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string): Promise<User> {
-    // Check if user already exists
-    const existingUser = await this.userModel.findOne({ email }).exec();
-    if (existingUser) {
-      throw new ConflictException('Email already exists');
-    }
+  async register(body : SignUpDTO) {
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new this.userModel({ email, password: hashedPassword });
-    return newUser.save();
+
+    console.log(body);
+    return body;
+    // Check if user already exists
+    // const existingUser = await this.userModel.findOne({ email }).exec();
+    // if (existingUser) {
+    //   throw new ConflictException('Email already exists');
+    // }
+
+    // // Hash the password
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // const newUser = new this.userModel({ email, password: hashedPassword });
+    // return newUser.save();
   }
 
   async login(
