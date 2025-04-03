@@ -1,33 +1,37 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, HttpCode, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import { SignUpDTO } from './users.dto';
+import Response from 'src/utils/response.builder';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
-  async register(body : SignUpDTO) {
+  async register(body: SignUpDTO) {
 
-
-    console.log(body);
-    return body;
+    const { email, name, password } = body;
     // Check if user already exists
-    // const existingUser = await this.userModel.findOne({ email }).exec();
-    // if (existingUser) {
-    //   throw new ConflictException('Email already exists');
-    // }
+    const existingUser = await this.userModel.findOne({ email }).exec();
+    if (existingUser) {
+      throw new ConflictException('Email already exists');
+    }
 
-    // // Hash the password
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    // const newUser = new this.userModel({ email, password: hashedPassword });
-    // return newUser.save();
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new this.userModel({ email, password: hashedPassword, name });
+    const saved = await newUser.save();
+    if (saved._id) {
+      return Response(HttpStatus.OK, 'User Saved Successfully', saved);
+    }
+
+    return Response(HttpStatus.BAD_REQUEST, 'Something Went Wrong');
+
   }
 
   async login(
