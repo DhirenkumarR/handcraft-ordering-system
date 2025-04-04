@@ -10,6 +10,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { ProductsModule } from './modules/products/products.module';
 import { User, UserSchema } from './schemas/user.schema';
+import { CompanyModule } from './modules/company/company.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { User, UserSchema } from './schemas/user.schema';
     ProductsModule,
     OrdersModule,
     UsersModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService,JwtStrategy],
