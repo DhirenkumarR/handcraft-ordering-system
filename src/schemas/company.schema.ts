@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { User } from './user.schema';
 
 
 class Address {
@@ -32,16 +33,20 @@ class Headquaters {
 
 @Schema({ timestamps: true })
 export class Company extends Document {
+
+  @Prop({ type: Types.ObjectId, ref: User.name, required: true })
+  companyId: Types.ObjectId;
+
   @Prop({ required: true })
   companyName : string
 
-  @Prop({ required: true })
+  @Prop({ default : [] })
   city: [];
 
-  @Prop({ required: true })
+  @Prop({ default : [] })
   country: [];
 
-  @Prop({ required: true })
+  @Prop({ default: null })
   staffSize: string
 
   @Prop({ default : null })
@@ -72,10 +77,7 @@ export class Company extends Document {
   isDeleted : boolean;
 
   @Prop({required : true})
-  email : string;
-
-  @Prop({required : true})
-  password : string;
+  contactNo : string[];
 
 }
 

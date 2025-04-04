@@ -26,9 +26,10 @@ export class S3Service {
 
   async generateUploadUrl(fileName: string, contentType: string): Promise<any> {
     const key = `uploads/${uuidv4()}/${fileName}`;
+    
     const params = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
-      Key: key,
+      Key: fileName,
       ContentType: contentType,
     };
     console.log(params);

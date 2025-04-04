@@ -21,7 +21,8 @@ export class CompanyController {
   @Get('upload')
   async uploadOnS3(
     @Query('fileName') fileName : string,
-    @Query('content') content : string
+    @Query('content') content : string,
+    
   ) {
     return this.s3Service.generateUploadUrl(fileName,content);
   }

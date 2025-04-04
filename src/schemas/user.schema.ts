@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { UserType } from 'src/utils/constants';
 
 
 class Address {
@@ -30,6 +31,18 @@ export class User extends Document {
 
   @Prop({ default : 'user', })
   roles: string;
+
+  @Prop({ enum: [UserType.USER, UserType.COMPANY], default : UserType.USER })
+  login_type : string
+
+  @Prop({ default : null })
+  contactNo : string
+  
+  @Prop({ default : 'user.jpg' })
+  profileImage : string
+
+  @Prop({ default : null })
+  coverImage : string
 
 }
 

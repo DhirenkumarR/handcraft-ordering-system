@@ -84,17 +84,17 @@ export class ComapnyRegisterDTO {
     @IsNumber()    
     staffSize : number;
 
-    @ApiProperty({example : 'chatgpt@gmail.com'})
-    @IsString({ message: 'Email must be a string.' })
-    @IsNotEmpty({ message: 'Email is required.' })
-    @Matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, {
-      message: Message.EMAIL_VALID
-    })
-    email: string;
+    // @ApiProperty({example : 'chatgpt@gmail.com'})
+    // @IsString({ message: 'Email must be a string.' })
+    // @IsNotEmpty({ message: 'Email is required.' })
+    // @Matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, {
+    //   message: Message.EMAIL_VALID
+    // })
+    // email: string;
     
-    @ApiProperty({example : 'Test@123'})
-    @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, {
-      message:Message.PASSWORD_MUST_BE_VALIDE,
-    })
-    password: string;
+    // @ApiProperty({example : 'Test@123'})
+    // @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, {
+    //   message:Message.PASSWORD_MUST_BE_VALIDE,
+    // })
+    // password: string;
 }

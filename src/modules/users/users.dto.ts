@@ -21,6 +21,16 @@ export class SignUpDTO {
       message:Message.PASSWORD_MUST_BE_VALIDE,
     })
     password: string;
+
+    @ApiProperty({example : 'company / user'})
+    @IsString()
+    @IsNotEmpty()
+    login_type : string;
+
+    @ApiProperty({example : '+91 4547454441'})
+    @IsString()
+    @IsNotEmpty()
+    contactNo : string;
 }
 
 export class LoginDTO {
