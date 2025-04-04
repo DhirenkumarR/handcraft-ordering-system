@@ -28,6 +28,9 @@ export class User extends Document {
   @Prop({type : [Address],default : [],})
   address : Address[];
 
+  @Prop({ default : 'user', })
+  roles: string;
+
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

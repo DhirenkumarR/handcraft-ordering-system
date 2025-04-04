@@ -4,6 +4,7 @@ import {
     ArgumentsHost,
     HttpException,
     HttpStatus,
+    ForbiddenException,
   } from '@nestjs/common';
   import { Response } from 'express';
   
@@ -30,6 +31,12 @@ import {
         if (Array.isArray(message)) {
           message = message[0];
         }
+      }
+
+      if(exception instanceof ForbiddenException){
+        status = exception.getStatus();
+        const exceptionResponse = exception.getResponse();
+        message = `Sorry, You don't have a permission to access this resource`
       }
   
       response.status(status).json({
