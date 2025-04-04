@@ -14,9 +14,8 @@ async function bootstrap() {
     })
   );
 
-
   app.useGlobalFilters(new AllExceptionsFilter());
-
+  
   const config = new DocumentBuilder()
   .setTitle('Handcraft Ordering System')
   .setDescription('API Documentation')

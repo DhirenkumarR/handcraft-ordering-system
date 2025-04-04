@@ -1,8 +1,8 @@
-export default function Response(statusCode?:number | 200 , message?:string | null,data? : any | null) {
+export default function Response(data? : any | null,statusCode?:number | 200 , message?:string | null) {
     return {
-        statusCode,
-        message,
-        data
+        data,
+        statusCode : statusCode ? statusCode : 200 ,
+        message : message ? message : null,
     }
 }
 

@@ -2,7 +2,7 @@ import { ConflictException, HttpCode, HttpStatus, Injectable, UnauthorizedExcept
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
-import { Model } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import { LoginDTO, SignUpDTO } from './users.dto';
 import Response, { ResponseI } from 'src/utils/response.builder';
@@ -14,7 +14,7 @@ export class UsersService {
     private jwtService: JwtService,
   ) { }
 
-  async register(body: SignUpDTO) : Promise<any> {
+  async register(body: SignUpDTO): Promise<any> {
 
     const { email, name, password } = body;
     // Check if user already exists
@@ -27,18 +27,18 @@ export class UsersService {
     const newUser = new this.userModel({ email, password: hashedPassword, name });
     const saved = await newUser.save();
     if (saved._id) {
-       return Response(HttpStatus.OK, 'User Saved Successfully', saved);
+      return Response(saved, HttpStatus.OK, 'User Saved Successfully');
     }
 
-    return Response(HttpStatus.BAD_REQUEST, 'Something Went Wrong');
+    return Response(null, HttpStatus.BAD_REQUEST, 'Something Went Wrong');
 
   }
 
   async login(
-    body : LoginDTO
+    body: LoginDTO
   ): Promise<any> {
 
-    const {email,password} = body;
+    const { email, password } = body;
 
     // Find user
 
@@ -57,7 +57,17 @@ export class UsersService {
     const payload = { email: user.email, sub: user._id };
     const accessToken = this.jwtService.sign(payload);
 
-    return Response(200,'Login Successfully',{accessToken,email : user.email, name : user.name})
+    return Response({ accessToken, email: user.email, name: user.name }, 200, 'Login Successfully')
+  }
+
+  async getUserProfile(user): Promise<any> {
+    const userDetails = await this.userModel.findOne({_id : new Types.ObjectId(user._id)});
+
+    if(userDetails){
+      return Response({name : userDetails.name,email : userDetails.email, _id : userDetails._id});
+    }
+
+    return Response(null,404,'User Not found');
     
   }
 }
