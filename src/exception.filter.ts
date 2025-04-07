@@ -5,6 +5,7 @@ import {
     HttpException,
     HttpStatus,
     ForbiddenException,
+    UnauthorizedException,
   } from '@nestjs/common';
   import { Response } from 'express';
   
@@ -35,10 +36,16 @@ import {
 
       if(exception instanceof ForbiddenException){
         status = exception.getStatus();
-        const exceptionResponse = exception.getResponse();
+        // const exceptionResponse = exception.getResponse();
         message = `Sorry, You don't have a permission to access this resource`
       }
-  
+      
+      if(exception instanceof UnauthorizedException){
+        status = exception.getStatus();
+        // const exceptionResponse = exception.getResponse();
+        message = `You are not authorized. Please login!`
+      }
+
       response.status(status).json({
         statusCode: status,
         message,

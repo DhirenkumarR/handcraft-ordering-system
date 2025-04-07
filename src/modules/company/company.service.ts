@@ -1,20 +1,23 @@
-import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConflictException, HttpException, HttpStatus, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Company } from 'src/schemas/company.schema';
 import { ComapnyRegisterDTO } from './company.dto';
 import Response from 'src/utils/response.builder';
 import * as bcrypt from 'bcrypt';
+import { REQUEST } from '@nestjs/core';
 
 @Injectable()
 export class CompanyService {
     constructor(
-        @InjectModel(Company.name) private companyModel: Model<Company>
+        @InjectModel(Company.name) private companyModel: Model<Company>,
+        @Inject(REQUEST) private readonly Req: Request
     ) { }
 
     async companyRegister(body: ComapnyRegisterDTO): Promise<any> {
 
-        const { name, overview, websiteUrl, industry, addresses, founded, staffSize } = body;
+        const { companyName, overview, websiteUrl, industry, addresses, founded, staffSize, profile, coverProfile } = body;
+        const {user} : any = this.Req;
 
         // const isCompanyRegister = await this.companyModel.findOne({
         //     email: email
@@ -24,18 +27,18 @@ export class CompanyService {
         //     throw new ConflictException('Company with email already exists!');
         // }
 
-        // const isCompanyNameExists = await this.companyModel.findOne({
-        //     companyName: name
-        // });
+        const isCompanyNameExists = await this.companyModel.findOne({
+            companyName: companyName
+        });
 
-        // if (isCompanyNameExists) {
-        //     throw new ConflictException('Company with name already exists!');
-        // }
+        if (isCompanyNameExists) {
+            throw new ConflictException('Company with name already exists!');
+        }
 
         // const hashedPassword = await bcrypt.hash(password, Number(process.env.PASSWORD_HASH));
 
-        const companyObject = new this.companyModel({
-            companyName: name,
+        const updateObj = {
+            companyName,
             overview,
             websiteUrl,
             industryType: industry,
@@ -52,16 +55,38 @@ export class CompanyService {
             staffSize,
             // email,
             // password: hashedPassword
-        });
-
-        const save = await companyObject.save();
-
-        if (save) {
-            return Response(save, 200, "Company Registration Successfully");
         }
 
-        throw new HttpException("Company Registration failed", HttpStatus.BAD_REQUEST);
+        if(profile){
+            updateObj['profile'] = profile;
+        }
 
+        if(coverProfile){
+            updateObj['coverProfile'] = coverProfile;
+        }
+
+        const updateCompanyDetails = await this.companyModel.updateOne({companyId : new Types.ObjectId(user._id)},{$set : updateObj});
+
+        if (updateCompanyDetails.modifiedCount > 0) {
+            updateObj['companyId'] = user._id;
+            return Response(updateObj, 200, "Company details updated Successfully");
+        }
+        throw new HttpException("Company details update failed", HttpStatus.BAD_REQUEST);
     }
+
+    async getCompanyProfile(): Promise<any> {
+        const { user }: any = this.Req;
+        const findCompany:any = await this.companyModel.findOne({ companyId: user._id, isDeleted: false });
+        if(findCompany){
+            findCompany['profile'] = findCompany.profile ? `${process.env.AWS_S3_BUCKET_URL}/${findCompany.profile}` : null;
+            findCompany['coverProfile'] = findCompany.coverProfile ? `${process.env.AWS_S3_BUCKET_URL}/${findCompany.coverProfile}` : null;
+            return Response(findCompany,200);
+        }
+
+        throw new NotFoundException('Company Doesnt Exists');
+    }
+
+
+    
 
 }

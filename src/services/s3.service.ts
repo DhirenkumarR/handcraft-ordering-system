@@ -29,7 +29,7 @@ export class S3Service {
     
     const params = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
-      Key: fileName,
+      Key: key,
       ContentType: contentType,
     };
     console.log(params);

@@ -81,7 +81,7 @@ export class UsersService {
 
     if(userDetails){
       userDetails['profileImage'] = `${process.env.AWS_S3_BUCKET_URL}/${userDetails.profileImage}`;
-      return Response({name : userDetails.name,email : userDetails.email, _id : userDetails._id,profileImage : userDetails.profileImage});
+      return Response({name : userDetails.name,email : userDetails.email, _id : userDetails._id,profileImage : userDetails.profileImage, });
     }
 
     return Response(null,404,'User Not found');

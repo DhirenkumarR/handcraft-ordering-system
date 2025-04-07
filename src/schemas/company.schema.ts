@@ -67,7 +67,7 @@ export class Company extends Document {
   @Prop({type : [Address],default : [],})
   addresses : Address[];
 
-  @Prop({default : null})
+  @Prop({default : 'office.jpg'})
   profile : string;
 
   @Prop({default : null})

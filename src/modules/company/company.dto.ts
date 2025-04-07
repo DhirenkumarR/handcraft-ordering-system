@@ -31,10 +31,15 @@ export class Headquaters {
 
 export class ComapnyRegisterDTO {
 
+    // @ApiProperty({ example: '67f36d5d69fa5c476afae463' })
+    // @IsString()
+    // @IsNotEmpty()
+    // companyId : string;
+
     @ApiProperty({ example: 'OpenAI' })
     @IsString()
     @IsNotEmpty()
-    name : string;
+    companyName : string;
 
     @ApiProperty({ example: 'Working in AI based things' })
     @IsString()
@@ -83,6 +88,16 @@ export class ComapnyRegisterDTO {
     @ApiProperty({ example: 150 })
     @IsNumber()    
     staffSize : number;
+
+    @ApiProperty({ example: 'profile.jpg' })
+    @IsString()    
+    profile : string;
+
+    @ApiProperty({ example: 'cover-profile.jpg' })
+    @IsString()    
+    coverProfile : string;
+    
+    
 
     // @ApiProperty({example : 'chatgpt@gmail.com'})
     // @IsString({ message: 'Email must be a string.' })
