@@ -124,7 +124,8 @@ export class CompanyService {
                         companyId,
                         totalPositions,
                         occupiedPositions,
-                        isActive
+                        isActive,
+                        addresses
                     }
         
                     const updateJobDetails = await this.JobPostModel.updateOne({_id : new Types.ObjectId(_id)},{$set : updateObj});
@@ -156,7 +157,8 @@ export class CompanyService {
                     country: addresses.map((ele) => ele.country),
                     city: addresses.map((ele) => ele.city),
                     companyId,
-                    totalPositions
+                    totalPositions,
+                    addresses
                 })
         
                 const sv = await saveJobPost.save();
@@ -182,6 +184,10 @@ export class CompanyService {
 
         match['companyId'] = new Types.ObjectId(companyId);
 
+        console.log(companyDetails.companyLoginId);
+        console.log(user._id);
+        
+        
         if(companyDetails.companyLoginId !== user._id){
             match['isActive'] = true;
         }
@@ -217,7 +223,6 @@ export class CompanyService {
         }
         return Response(result,200,'Not Found');
     }
-
 
 
 }

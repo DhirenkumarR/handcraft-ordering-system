@@ -1,8 +1,23 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { User } from './user.schema';
 import { Company } from './company.schema';
 
+class Address {
+  @Prop({ default: null })
+  address: string;
+
+  @Prop({ default: null })
+  city: string;
+
+  @Prop({ default: null })
+  pincode: string;
+
+  @Prop({ default: null })
+  country: string;
+
+  @Prop({ default: true })
+  isHeadquarter: boolean;
+}
 
 @Schema({ timestamps: true })
 export class CompanyJobPost extends Document {
@@ -11,67 +26,70 @@ export class CompanyJobPost extends Document {
   companyId: Types.ObjectId;
 
   @Prop({ required: true })
-  jobTitle : string
+  jobTitle: string
 
   @Prop({ required: true })
-  jobType : string
+  jobType: string
 
   @Prop({ required: true })
-  jobCategory : string[]
+  jobCategory: string[]
 
   @Prop({ required: true })
-  minExperience : number
+  minExperience: number
 
   @Prop({ required: true })
-  maxExperience : number
+  maxExperience: number
 
-  @Prop({ default : [] })
+  @Prop({ default: [] })
   degree: string[];
 
-  @Prop({ default : null })
+  @Prop({ default: null })
   minSalary: number;
 
-  @Prop({ default : null })
+  @Prop({ default: null })
   maxSalary: number;
 
-  @Prop({ default : null })
+  @Prop({ default: null })
   salaryType: string;
 
-  @Prop({ default : null })
+  @Prop({ default: null })
   currency: string;
 
-  @Prop({ default : [] })
+  @Prop({ default: [] })
   city: [];
 
-  @Prop({ default : [] })
+  @Prop({ default: [] })
   country: [];
 
-  @Prop({ default : null })
+  @Prop({ default: null })
   jobDescription: string
 
-  @Prop({ default : [] })
+  @Prop({ default: [] })
   keyResponsibility: string[]
 
-  @Prop({ default : [] })
+  @Prop({ default: [] })
   professionalSkills: string[]
 
-  @Prop({ default : [] })
+  @Prop({ default: [] })
   tags: string[]
 
-  @Prop({default : false})
-  isDeleted : boolean;
+  @Prop({ default: false })
+  isDeleted: boolean;
 
-  @Prop({required : true})
-  contactNo : string[];
+  @Prop({ required: true })
+  contactNo: string[];
 
-  @Prop({default : null})
-  totalPositions : number;
-  
-  @Prop({default : null})
-  occupiedPositions : number;
+  @Prop({ default: null })
+  totalPositions: number;
 
-  @Prop({ default : true })
+  @Prop({ default: null })
+  occupiedPositions: number;
+
+  @Prop({ default: true })
   isActive: boolean;
+
+  @Prop({ type: [Address], default: [], })
+  addresses: Address[];
 
 }
 
