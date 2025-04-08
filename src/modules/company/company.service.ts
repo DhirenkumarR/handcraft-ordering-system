@@ -184,10 +184,6 @@ export class CompanyService {
 
         match['companyId'] = new Types.ObjectId(companyId);
 
-        console.log(companyDetails.companyLoginId);
-        console.log(user._id);
-        
-        
         if(companyDetails.companyLoginId !== user._id){
             match['isActive'] = true;
         }
