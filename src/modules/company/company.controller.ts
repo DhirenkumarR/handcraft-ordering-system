@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, ParseIntPipe, Post, Query, UseGuards } from '@nestjs/common';
 import { CompanyService } from './company.service';
-import { ComapnyRegisterDTO } from './company.dto';
+import { ComapnyRegisterDTO } from './dto/company.dto';
 import { S3Service } from 'src/services/s3.service';
 import { JwtAuthGuard } from 'src/authGuards/jwt-auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { PostJobDTO } from './dto/createPost.dto';
 
 @ApiTags('Company') 
 @ApiBearerAuth() 
@@ -39,5 +40,24 @@ export class CompanyController {
   async getCompanyProfile(){
     return this.companyService.getCompanyProfile();
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('create-job-post')
+  async jobPost(@Body() body:PostJobDTO){
+    return this.companyService.jobPost(body);
+  }
+
+
+  @UseGuards(JwtAuthGuard)
+  @Get('get-job-post-by-company')
+  async getJobPostByCompany(
+    @Query('companyId') comapnyId:string,
+    @Query('page',ParseIntPipe) page:number,
+    @Query('limit',ParseIntPipe) limit:number,
+  ){
+    return this.companyService.getJobByCompany(comapnyId,page,limit);
+  }
+
+
 
 }

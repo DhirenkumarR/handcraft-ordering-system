@@ -35,7 +35,7 @@ class Headquaters {
 export class Company extends Document {
 
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
-  companyId: Types.ObjectId;
+  companyLoginId: Types.ObjectId;
 
   @Prop({ required: true })
   companyName : string

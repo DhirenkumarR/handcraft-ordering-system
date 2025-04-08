@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import mongoose, { Model, Types } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
-import { LoginDTO, SignUpDTO } from './users.dto';
+import { LoginDTO, SignUpDTO } from './dto/users.dto';
 import Response, { ResponseI } from 'src/utils/response.builder';
 import { Company } from 'src/schemas/company.schema';
 import { UserType } from 'src/utils/constants';
@@ -35,7 +35,7 @@ export class UsersService {
       if(login_type == UserType.COMPANY){
         const company = new this.companyModel({
           companyName : name,
-          companyId : saved._id,
+          companyLoginId : saved._id,
           contactNo 
         });
 

@@ -34,7 +34,7 @@ export class ComapnyRegisterDTO {
     // @ApiProperty({ example: '67f36d5d69fa5c476afae463' })
     // @IsString()
     // @IsNotEmpty()
-    // companyId : string;
+    // companyLoginId : string;
 
     @ApiProperty({ example: 'OpenAI' })
     @IsString()
@@ -97,7 +97,7 @@ export class ComapnyRegisterDTO {
     @IsString()    
     coverProfile : string;
     
-    
+
 
     // @ApiProperty({example : 'chatgpt@gmail.com'})
     // @IsString({ message: 'Email must be a string.' })
